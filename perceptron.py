@@ -7,7 +7,7 @@ labels = np.load("labels.npy")
 X_train, X_test, y_train, y_test = train_test_split(images, labels, test_size=0.20, random_state=42) #seperates the data set randomly into test and train sets
 
 X_train_flatten = X_train.reshape(X_train.shape[0], -1).T #reshaping into vector form instead of multi-d array
-X_test_flatten = X_test.reshape(X_test.shape[0], -1).T
+X_test_flatten = X_test.reshape(X_test.shape[0], -1).T #.T means transpose
 y_train = y_train.reshape(1, y_train.shape[0])
 y_test = y_test.reshape(1, y_test.shape[0])
 
@@ -24,23 +24,8 @@ def sigmoid(z):
     s = 1 / (1 + np.exp(-z))
     return s
 def relu(Z):
-    """
-    Implement the RELU function.
-
-    Arguments:
-    Z -- Output of the linear layer, of any shape
-
-    Returns:
-    A -- Post-activation parameter, of the same shape as Z
-    cache -- a python dictionary containing "A" ; stored for computing the backward pass efficiently
-    """
-
     A = np.maximum(0, Z)
-
-    #assert(A.shape == Z.shape)
-
-    #cache = Z
-    return A#, cache
+    return A
 
 def propagate(w, b, X, Y):
     m = X.shape[1]
@@ -96,8 +81,7 @@ def predict(w, b, X):
 c = []
 def model(X_train, Y_train, X_test, Y_test, num_iterations=2000, learning_rate=0.5):
     w, b = initialize_with_zeros(X_train.shape[0])
-    params, grads, costs = gradient_decent(
-        w, b, X_train, Y_train, num_iterations, learning_rate)
+    params, grads, costs = gradient_decent(w, b, X_train, Y_train, num_iterations, learning_rate)
     w = params["w"]
     b = params["b"]
 
